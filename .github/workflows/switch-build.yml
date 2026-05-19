@@ -1,4 +1,4 @@
-name: Build Nintendo Switch NRO
+name: Build Nintendo Switch NRO 
 
 on:
   workflow_dispatch:
