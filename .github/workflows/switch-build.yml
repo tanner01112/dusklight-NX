@@ -22,10 +22,14 @@ jobs:
           apt-get update
           apt-get install -y cmake make git build-essential
 
-      - name: Configure and Compile Switch App
+      - name: Run CMake Configuration
         run: |
           mkdir -p build && cd build
           cmake -DCMAKE_TOOLCHAIN_FILE=/opt/devkitpro/cmake/Switch.cmake ..
+
+      - name: Run Make Compilation
+        run: |
+          cd build
           make -j$(nproc)
 
       - name: Deep Search and Upload Finished NRO File
