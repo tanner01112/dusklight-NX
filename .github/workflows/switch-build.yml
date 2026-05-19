@@ -1,4 +1,4 @@
-name: Build Nintendo Switch NRO 
+name: Build Nintendo Switch NRO
 
 on:
   workflow_dispatch:
@@ -25,17 +25,12 @@ jobs:
       - name: Configure and Compile Switch App
         run: |
           mkdir -p build && cd build
-          cmake -DCMAKE_TOOLCHAIN_FILE=/opt/devkitpro/cmake/Switch.cmake ..
+          aarch64-none-elf-cmake -G "Unix Makefiles" -DCMAKE_TOOLCHAIN_FILE=/opt/devkitpro/cmake/Switch.cmake ..
           make -j$(nproc)
 
-      - name: Upload Finished NRO File
+      - name: Deep Search and Upload Finished NRO File
         uses: actions/upload-artifact@v4
         with:
           name: Custom-Dusklight-Switch
           path: |
-            build/*.nro
-            *.nro
-        with:
-          name: Custom-Dusklight-Switch
-          path: build/*.nro
-          
+            **/*.nro
