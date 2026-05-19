@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true # This hides that Node20 warning
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
   build:
@@ -22,18 +22,19 @@ jobs:
           apt-get update
           apt-get install -y cmake make git build-essential
 
-      - name: Configure CMake for Switch
+      - name: Configure and Compile Switch App
         run: |
           mkdir -p build && cd build
-          cmake -DCMAKE_TOOLCHAIN_FILE=/opt/devkitpro/cmake/Switch.cmake .. || echo "CMake configuration failed, continuing to log error..."
-
-      - name: Compile Source Code
-        run: |
-          cd build
+          cmake -DCMAKE_TOOLCHAIN_FILE=/opt/devkitpro/cmake/Switch.cmake ..
           make -j$(nproc)
 
       - name: Upload Finished NRO File
         uses: actions/upload-artifact@v4
+        with:
+          name: Custom-Dusklight-Switch
+          path: |
+            build/*.nro
+            *.nro
         with:
           name: Custom-Dusklight-Switch
           path: build/*.nro
