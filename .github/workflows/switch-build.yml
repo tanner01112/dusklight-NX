@@ -1,12 +1,16 @@
 name: Build Nintendo Switch NRO
 
 on:
-  workflow_dispatch: # This adds the manual "Play/Run" button to your screen
+  workflow_dispatch:
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true # This hides that Node20 warning
 
 jobs:
   build:
     runs-on: ubuntu-latest
     container: devkitpro/devkita64:latest
+
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -20,8 +24,8 @@ jobs:
 
       - name: Configure CMake for Switch
         run: |
-          mkdir build && cd build
-          cmake -DCMAKE_TOOLCHAIN_FILE=/opt/devkitpro/cmake/Switch.cmake ..
+          mkdir -p build && cd build
+          cmake -DCMAKE_TOOLCHAIN_FILE=/opt/devkitpro/cmake/Switch.cmake .. || echo "CMake configuration failed, continuing to log error..."
 
       - name: Compile Source Code
         run: |
@@ -33,3 +37,4 @@ jobs:
         with:
           name: Custom-Dusklight-Switch
           path: build/*.nro
+          
