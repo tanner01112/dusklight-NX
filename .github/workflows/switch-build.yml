@@ -49,24 +49,3 @@ jobs:
           name: Custom-Dusklight-Switch
           path: |
             **/*.nro
-
-                -DHAVE_PTHREADS=ON \
-                -DDAWN_BUILD_VULKAN=OFF \
-                -DDAWN_BUILD_OPENGL=OFF \
-                -DDAWN_ENABLE_NULL=ON ..
-
-      - name: Run Make Compilation
-        run: |
-          cd build
-          make -j$(nproc)
-
-      - name: Deep Search and Upload Finished NRO File
-        uses: actions/upload-artifact@v4
-        with:
-          name: Custom-Dusklight-Switch
-          path: |
-            **/*.nro
-        with:
-          name: Custom-Dusklight-Switch
-          path: |
-            **/*.nro
