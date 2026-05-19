@@ -1,0 +1,36 @@
+name: Build Nintendo Switch NRO
+
+on:
+  workflow_dispatch: # This adds the manual "Play/Run" button to your screen
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container: devkitpro/toolchain-devkita64:latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Install System Dependencies
+        run: |
+          apt-get update
+          apt-get install -y cmake make git build-essential
+
+      - name: Configure CMake for Switch
+        run: |
+          mkdir build && cd build
+          cmake -DCMAKE_TOOLCHAIN_FILE=/opt/devkitpro/cmake/Switch.cmake ..
+
+      - name: Compile Source Code
+        run: |
+          cd build
+          make -j$(nproc)
+
+      - name: Upload Finished NRO File
+        uses: actions/upload-artifact@v4
+        with:
+          name: Custom-Dusklight-Switch
+          path: build/*.nro
