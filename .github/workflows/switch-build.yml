@@ -25,7 +25,7 @@ jobs:
       - name: Configure and Compile Switch App
         run: |
           mkdir -p build && cd build
-          aarch64-none-elf-cmake -G "Unix Makefiles" -DCMAKE_TOOLCHAIN_FILE=/opt/devkitpro/cmake/Switch.cmake ..
+          cmake -DCMAKE_TOOLCHAIN_FILE=/opt/devkitpro/cmake/Switch.cmake ..
           make -j$(nproc)
 
       - name: Deep Search and Upload Finished NRO File
