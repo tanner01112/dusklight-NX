@@ -17,6 +17,11 @@ jobs:
         with:
           submodules: recursive
 
+      - name: Set Git Trust Exceptions
+        run: |
+          git config --global --add safe.directory /__w/dusklight-NX/dusklight-NX
+          git config --global --add safe.directory /__w/dusklight-NX/dusklight-NX/build/_deps/dawn-src
+
       - name: Install System Dependencies
         run: |
           apt-get update
@@ -25,7 +30,14 @@ jobs:
       - name: Run CMake Configuration
         run: |
           mkdir -p build && cd build
-          cmake -DCMAKE_TOOLCHAIN_FILE=/opt/devkitpro/cmake/Switch.cmake ..
+          cmake -DCMAKE_TOOLCHAIN_FILE=/opt/devkitpro/cmake/Switch.cmake \
+                -DCMAKE_BUILD_TYPE=Release \
+                -DSDL_THREADS=ON \
+                -DSDL_PTHREADS=OFF \
+                -DHAVE_PTHREADS=ON \
+                -DDAWN_BUILD_VULKAN=OFF \
+                -DDAWN_BUILD_OPENGL=OFF \
+                -DDAWN_ENABLE_NULL=ON ..
 
       - name: Run Make Compilation
         run: |
@@ -34,6 +46,10 @@ jobs:
 
       - name: Deep Search and Upload Finished NRO File
         uses: actions/upload-artifact@v4
+        with:
+          name: Custom-Dusklight-Switch
+          path: |
+            **/*.nro
         with:
           name: Custom-Dusklight-Switch
           path: |
